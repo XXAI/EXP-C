@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>{{data.edit ? "Editar permiso" : "Crear permiso"}}</h1>
+<div mat-dialog-content>
+    <div class="spinner-container" *ngIf="loading ">
+        <mat-spinner></mat-spinner>
+    </div>
+    
+    <form class="form" [formGroup]="form" (ngSubmit)="guardar()" (keyup.enter)="guardar()" *ngIf="!loading">
+        <mat-form-field>
+            <mat-label>ID</mat-label>
+            <input matInput name="id" formControlName="id" maxlength="16" >
+            <mat-error *ngIf="form?.controls['id']?.hasError('required')">Campo requerido</mat-error>
+            <mat-error *ngIf="form?.controls['id']?.hasError('max')">La longitud del ID supera los 16 caracteres.</mat-error>
+            <mat-error *ngIf="form?.controls['id']?.hasError('unique')">El ID ya fue utilizado, ingrese uno nuevo.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Descripción</mat-label>
+            <input matInput name="descripcion" formControlName="descripcion" maxlength="255">
+            
+            <mat-error *ngIf="form?.controls['descripcion']?.hasError('required')">Campo requerido</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Grupo</mat-label>
+            <mat-select name="grupo_id" formControlName="grupo_id">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let grupo of grupos " [value]="grupo.id">
+                {{grupo.nombre}}
+            </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form?.controls['grupo_id']?.hasError('exists')">La opción elegida no es válida.</mat-error>
+            <mat-error *ngIf="form?.controls['grupo_id']?.hasError('required')">Por favor seleccione un grupo</mat-error>
+        </mat-form-field>
+        <mat-checkbox name="su" formControlName="su">Super usuario</mat-checkbox>
+    </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-button  color="warn" (click)="borrar()" *ngIf="data.edit">Borrar</button>
+  <button mat-raised-button color="primary" (click)="guardar()" [disabled]="loading">Guardar</button>
+</div>

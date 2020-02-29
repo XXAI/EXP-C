@@ -1,0 +1,22 @@
+<!--<button mat-icon-button aria-label="Apps" [matMenuTriggerFor]="menu" matTooltip="Aplicaciones">-->
+<button mat-icon-button aria-label="Apps" matTooltip="Aplicaciones" (click)="openDialog()">
+    <mat-icon>apps</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+    <button mat-menu-item>
+        <mat-icon svgIcon="custom_patient"></mat-icon>
+        <span>Pacientes</span>
+    </button>
+    <button mat-menu-item >
+        <mat-icon svgIcon="custom_schedule"></mat-icon>
+        <span>Agenda médica</span>
+    </button>
+    <button mat-menu-item >
+        <mat-icon svgIcon="custom_settings"></mat-icon>
+        <span>Configuración</span>
+    </button>
+    <button mat-menu-item >
+        <mat-icon svgIcon="custom_users"></mat-icon>
+        <span>Usuarios y roles</span>
+    </button>
+</mat-menu>

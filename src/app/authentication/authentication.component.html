@@ -1,0 +1,25 @@
+<div class="auth-container">
+    <mat-card>
+        <div class="logos">
+            <img style="width: 30%;" src="assets/logo-app.svg" alt="">
+            <img style="width: 40%;" src="assets/logo-dependencia.png" alt="">
+        </div>
+        
+        <mat-divider></mat-divider>
+        <form class="auth-form" [formGroup]="authForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline">
+                <mat-label>Usuario</mat-label>
+                <input matInput placeholder="Introduce usuario" name="username" formControlName="username">
+                <mat-icon matSuffix>person</mat-icon>
+                <mat-error *ngIf="authForm.controls['username']?.errors?.required">Porfavor, ingrese su nombre de usuario.</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Contraseña</mat-label>
+                <input type="password" matInput placeholder="Introduce tu contraseña" name="password" formControlName="password">
+                <mat-icon matSuffix>vpn_key</mat-icon>
+                <mat-error *ngIf="authForm.controls['password']?.errors?.required">La contraseña es requerida.</mat-error>
+            </mat-form-field>
+            <button mat-raised-button color="primary" [disabled]="!authForm.valid">Iniciar sesión</button>
+        </form>
+    </mat-card>
+</div>

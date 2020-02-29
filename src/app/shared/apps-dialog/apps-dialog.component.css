@@ -1,0 +1,40 @@
+
+a {
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.mat-grid-tile:hover {
+    background: rgba(0,0,0,0.05);
+    border-radius: 10px;
+
+    
+}
+.mat-grid-tile img {
+    width: 64px;
+    height: 64px;
+    margin-top: 5px;
+}
+
+.mat-grid-tile span {
+    white-space: nowrap;
+    overflow:  hidden;
+    width: 64px;
+    height: 1rem;
+    display: inline-block;
+    font-size: 0.9rem;
+
+    text-overflow: ellipsis;
+}
+.mat-grid-tile:hover span {
+    height: 2rem;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
