@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>{{data.edit ? "Editar rol" : "Crear rol"}}</h1>
+<div mat-dialog-content>
+    <div class="spinner-container" *ngIf="loading ">
+        <mat-spinner></mat-spinner>
+    </div>
+    
+    <form class="form" [formGroup]="form" (ngSubmit)="guardar()" (keyup.enter)="guardar()" *ngIf="!loading">
+        <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input matInput name="nombre" formControlName="nombre" maxlength="255">            
+            <mat-error *ngIf="form?.controls['nombre']?.hasError('required')">Campo requerido</mat-error>
+        </mat-form-field>
+
+        <mat-accordion>
+            <ng-container *ngFor="let grupo of grupos">
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        {{grupo.nombre}}
+                      </mat-panel-title>
+                      <mat-panel-description>
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <mat-selection-list #shoes>
+                        <mat-list-option *ngFor="let permiso of grupo.permisos">
+                          {{permiso.descripcion}}
+                        </mat-list-option>
+                    </mat-selection-list>
+                </mat-expansion-panel>
+            </ng-container>         
+        </mat-accordion>
+        <br>
+    </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-button  color="warn" (click)="borrar()" *ngIf="data.edit">Borrar</button>
+  <button mat-raised-button color="primary" (click)="guardar()" [disabled]="loading">Guardar</button>
+</div>

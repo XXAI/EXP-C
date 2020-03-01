@@ -22,7 +22,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSortModule} from '@angular/material/sort';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [],
@@ -47,7 +47,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatProgressBarModule,
     MatSortModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatExpansionModule
   ],
   exports: [
     MatSidenavModule,
@@ -69,7 +70,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatProgressBarModule,
     MatSortModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatExpansionModule
   ],
   providers: [
     {provide: MatPaginatorIntl, useValue: CustomMatPaginatorIntl}

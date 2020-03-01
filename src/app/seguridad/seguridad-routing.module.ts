@@ -13,6 +13,10 @@ const routes: Routes = [
   {   
     path: 'grupos',
     loadChildren: () => import('./grupos/grupos.module').then(m => m.GruposModule) 
+  },
+  {   
+    path: 'roles',
+    loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule) 
   }
 ];
 
