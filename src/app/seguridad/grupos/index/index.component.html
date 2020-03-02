@@ -39,7 +39,7 @@
             <div class="spinner-container" *ngIf="dataSource.loading$ | async">
                 <mat-progress-bar mode="indeterminate"></mat-progress-bar>
             </div>    
-            <table mat-table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="asc">
+            <table mat-table [dataSource]="dataSource" matSort >
                 <!-- Position Column -->
                 <ng-container matColumnDef="id">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>

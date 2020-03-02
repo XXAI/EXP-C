@@ -26,10 +26,15 @@ export class RolesService {
         .set('pageSize', pageSize.toString())
     });
   }
+
+  ver(id:string):Observable<any>{
+    return this.http.get(`${this.api}/${this.resource}/${id}`);
+  }
+
   crear(object: any):Observable<any>{
     return this.http.post(`${this.api}/${this.resource}`,object);
   }
-
+  
   editar(id:string, object: any):Observable<any>{
     return this.http.put(`${this.api}/${this.resource}/${id}`,object);
   }
