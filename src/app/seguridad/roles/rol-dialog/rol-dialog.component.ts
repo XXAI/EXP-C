@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, Inject, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, ViewChild, AfterViewInit, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatSnackBar, MatSelectionList } from '@angular/material';
 import { Rol } from '../data-source/rol';
-import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, NgModel } from '@angular/forms';
 import { RolesService } from '../data-source/roles.service';
 import { merge,interval } from 'rxjs';
 import { Subscription } from 'rxjs';
@@ -25,11 +25,12 @@ export class RolDialogComponent implements OnInit, OnDestroy, AfterViewInit {
   id:any;
   permisosError:boolean;
   objectSubscription: Subscription;
-  refreshSelectionListSubscription : Subscription;
+  //refreshSelectionListSubscription : Subscription;
+
 
   object:any;
 
-  @ViewChild('permisos',{static: false}) permisosSelectionList: MatSelectionList;
+  @ViewChildren('permisos') permisosSelectionList: QueryList<any>;
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +42,9 @@ export class RolDialogComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit (){
     
-    
+    this.object = {
+      permisos:[]
+    }
     this.form = this.fb.group(
       {
         nombre: ['']
@@ -56,24 +59,23 @@ export class RolDialogComponent implements OnInit, OnDestroy, AfterViewInit {
   
   ngOnDestroy(){
     this.objectSubscription.unsubscribe();
+    /*
     if(this.refreshSelectionListSubscription != null){
       this.refreshSelectionListSubscription.unsubscribe();
-    }    
+    }    */
   }
+
 
   ngAfterViewInit(){
 
 
     if(this.data.rol != null){
       this.id = this.data.rol.id;  
-
-
      
       this.objectSubscription = merge(
         this.apiService.grupos().pipe(
           map(response => {
-            this.grupos = response.data;
-            
+            this.grupos = response.data;            
             return false;
           })
         ),
@@ -85,33 +87,35 @@ export class RolDialogComponent implements OnInit, OnDestroy, AfterViewInit {
           })
         )
       ).subscribe(
-        response => {
-          if(response){
+        last => {
+          if(last){
             this.loading = false;
+            this.refreshPermisosSelectionList(this.object.permisos.map( v => v.id));
           }          
         }
       )
+      /*     
 
       // Set selected objects
       this.refreshSelectionListSubscription = interval(0).pipe(
         first( val => typeof this.permisosSelectionList !== "undefined" && !this.loading  )
       ).subscribe(
         val => {
+         
           //this.permisosSelectionList.options = this.object.permisos;
-          this.permisosSelectionList.options.forEach(item => {
-            console.log(item.value.id +  ": [");
-            for(var x in this.object.permisos ){
-              console.log(this.object.permisos[x].id );
-              if(item.value.id == this.object.permisos[x].id ){
-                console.log("true");
-                item.selected = true;
-              }
+          this.permisosSelectionList.toArray().forEach(
+            (list) => {
+              (list as MatSelectionList).options.forEach(item => {
+                for(var x in this.object.permisos ){
+                  if(item.value.id == this.object.permisos[x].id ){
+                    item.selected = true;
+                  }
+                }                
+              });
             }
-            console.log("]");
-            
-          });
+          );
         }
-      )
+      )*/
 
 
     } else {
@@ -122,15 +126,17 @@ export class RolDialogComponent implements OnInit, OnDestroy, AfterViewInit {
         }, error=> {
           this.loading = false;
         }      
-      ); 
+      );     
     }    
-
-    
   }
 
   crear(){
     this.loading = true;
-    this.apiService.crear(this.form.value).subscribe(
+
+    var payload = this.form.value;
+    payload.permisos = this.getPermisosSeleccionados();
+
+    this.apiService.crear(payload).subscribe(
       response => {
         this.loading = false;
         this.id = response.id;
@@ -146,6 +152,7 @@ export class RolDialogComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       errorResponse => {
         this.loading = false;
+        this.refreshPermisosSelectionList(payload.permisos);
         if(errorResponse.status == 409){
           this.snackBar.open("Verifique la información del formulario", "Cerrar", {
             duration: 4000,
@@ -162,7 +169,11 @@ export class RolDialogComponent implements OnInit, OnDestroy, AfterViewInit {
 
   editar(){
     this.loading = true;
-    this.apiService.editar(this.id,this.form.value).subscribe(
+
+    var payload = this.form.value;
+    payload.permisos = this.getPermisosSeleccionados();
+
+    this.apiService.editar(this.id,payload).subscribe(
       response => {
         this.id = response.id;
         this.data.rol = response;
@@ -175,6 +186,7 @@ export class RolDialogComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       errorResponse => {
         this.loading = false;
+        this.refreshPermisosSelectionList(payload.permisos);
         if(errorResponse.status == 409){
           this.snackBar.open("Verifique la información del formulario", "Cerrar", {
             duration: 4000,
@@ -211,7 +223,6 @@ export class RolDialogComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   guardar(): void {
-    console.log(this.getPermisosSeleccionados());
     for (const key in this.form.controls) {
       this.form.get(key).clearValidators();
       this.form.get(key).updateValueAndValidity();
@@ -226,8 +237,37 @@ export class RolDialogComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  refreshPermisosSelectionList(array: any[]){
+    setTimeout(()=> {      
+      this.permisosSelectionList.toArray().forEach(
+        (list) => {
+          (list as MatSelectionList).options.forEach(item => {
+            for(var x in array ){
+              if(item.value.id == array[x]){
+                item.selected = true;
+              }
+            }                
+          });
+        }
+      );
+    })
+   
+  }
+
   getPermisosSeleccionados() {
-    return this.permisosSelectionList.selectedOptions.selected.map(s => s.value);
+    var permisos:any[] = [];
+  
+    this.object.permisos = [];
+    this.permisosSelectionList.toArray().forEach(
+      (list) => {
+        (list as MatSelectionList).selectedOptions.selected.forEach(item =>{
+          permisos.push(item.value.id);
+          this.object.permisos.push(item.value);
+        });       
+      }
+    );
+    
+    return permisos;
   }
   serverValidator(error: {[key: string]: any}):ValidatorFn {
     return (control: AbstractControl): {[key: string]: any} => {
