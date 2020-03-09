@@ -1,0 +1,92 @@
+.body-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0px;
+}
+
+.sidenav-container {
+    /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+       causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+    flex: 1;
+}
+
+.container-is-mobile .example-sidenav-container {
+    /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+       `<body>` to be our scrolling element for mobile layouts. */
+    flex: 1 0 auto;
+}
+
+.container-is-mobile .module-toolbar {
+    position: fixed;
+    /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+    z-index: 2;
+  }
+
+.toolbar-spacer {
+    flex: 1 1 auto;
+}
+
+mat-sidenav {
+    width: 200px;
+}
+mat-sidenav-content {
+    background-color: white;
+}
+
+mat-toolbar {
+    background: white;
+    border-bottom: 1px solid #eaeaea;
+}
+
+table {
+
+    width: 100%;
+}
+
+.search-toolbar-field{
+    display: flex;
+    flex: 3;
+    font-size: 1rem;
+    background-color: #f0f0f0;
+   /* border: 1px solid #F0f0f0;*/
+    padding:  0.25rem ;
+    margin: 0px;
+
+    border-radius: 0.5rem;
+    justify-content: flex-start;
+
+}
+.search-toolbar-field input{
+    border: none;
+    background: none;
+    outline: none;
+    font-size: inherit; 
+    margin: 0 0.5em 0 0.5em;
+    flex:auto;
+} 
+.search-toolbar-field:focus-within {
+    background-color: white;
+    box-shadow: 0px 0px 0.15rem  rgba(0,0,0,0.25);
+}
+
+
+.mat-column-updated_at {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 130px !important;
+    width: 130px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }

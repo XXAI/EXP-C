@@ -23,6 +23,7 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   declarations: [],
@@ -48,7 +49,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatSortModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTabsModule
   ],
   exports: [
     MatSidenavModule,
@@ -71,7 +73,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatSortModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTabsModule
   ],
   providers: [
     {provide: MatPaginatorIntl, useValue: CustomMatPaginatorIntl}
